@@ -6,7 +6,7 @@ ARG KICAD_VERSION=9.0
 RUN apt update && apt install -y software-properties-common
 
 # Install KiCad
-RUN add-apt-repository -y ppa:kicad/kicad-9.0-releases && apt update && apt install -y kicad=${KICAD_VERSION}
+RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && apt update && apt install -y kicad
 
 # Copy base library into GitHub workflow user folder
 RUN mkdir -p /home/runner/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
