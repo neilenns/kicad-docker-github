@@ -2,8 +2,8 @@ FROM ubuntu:latest
 
 ARG KICAD_VERSION=9.0
 
-# Install dependencies for adding repositories
-RUN apt update && apt install -y software-properties-common
+# Install dependencies for adding repositories and using as a devcontainer
+RUN apt update && apt install -y software-properties-common sudo openssh-client
 
 # Install KiCad
 RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && apt update && apt install -y kicad
