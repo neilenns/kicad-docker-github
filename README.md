@@ -1,6 +1,10 @@
 # KiCad Docker images for GitHub workflows
 
-This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitHub workflows and as a VSCode devcontainer.
+This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitHub workflows and as a VSCode devcontainer. The following packages are included:
+
+- `sudo`: for VSCode devcontainers
+- `openssh-client`: for GitHub access via SSH
+- `zip`: for zipping output to attach to workflow runs or releases  
 
 Use it like this in a GitHub workflow:
 
