@@ -3,7 +3,17 @@ FROM ubuntu:latest
 ARG KICAD_VERSION=9.0
 
 # Install dependencies for adding repositories, using as a devcontainer, and zipping workflow output
-RUN apt update && apt install -y software-properties-common sudo openssh-client zip git
+RUN apt update && apt install -y software-properties-common sudo openssh-client zip
+
+# Install gh cli for access to automerge capabilities in a github workflow
+RUN (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+        && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
 
 # Install KiCad
 RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && apt update && apt install -y kicad

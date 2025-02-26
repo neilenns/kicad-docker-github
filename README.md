@@ -2,7 +2,7 @@
 
 This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitHub workflows and as a VSCode devcontainer. The following packages are included:
 
-- `git`: for use in workflows to check generated images into the repo
+- `gh`: command line GitHub tools for use in workflows to automerge pull requests
 - `kicad`: for `kicad-cli`
 - `openssh-client`: for GitHub access via SSH
 - `sudo`: for VSCode devcontainers
