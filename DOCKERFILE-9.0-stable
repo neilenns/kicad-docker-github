@@ -15,12 +15,28 @@ RUN (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y
 	&& sudo apt update \
 	&& sudo apt install gh -y
 
-# Install KiCad
-RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && apt update && apt install -y kicad
+# Install KiCad, but do not install docs or 3d models to save time and space. 3d models will come
+# from the JLCPCB library.
+RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && \
+    apt update && \
+    apt install -y --no-install-recommends \
+    kicad \
+    kicad-symbols \
+    kicad-footprints
 
 # Copy base library into GitHub workflow user folder
 RUN mkdir -p /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
 RUN cp /usr/share/kicad/template/*-lib-table /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
+
+# Install latest JLCPCB library
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+COPY install-jlcpcb.sh /usr/local/bin/install-jlcpcb.sh
+RUN chmod +x /usr/local/bin/install-jlcpcb.sh && \
+    /usr/local/bin/install-jlcpcb.sh && \
+    rm /usr/local/bin/install-jlcpcb.sh
 
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
