@@ -19,8 +19,8 @@ RUN (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y
 RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && apt update && apt install -y kicad
 
 # Copy base library into GitHub workflow user folder
-RUN mkdir -p /home/runner/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
-RUN cp /usr/share/kicad/template/*-lib-table /home/runner/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
+RUN mkdir -p /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
+RUN cp /usr/share/kicad/template/*-lib-table /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
 
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
