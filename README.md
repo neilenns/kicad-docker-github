@@ -8,7 +8,7 @@ This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitH
 - `sudo`: for VSCode devcontainers
 - `zip`: for zipping output to attach to workflow runs or releases
 
-The kicad installation excludes documentation and 3D models to save space. The great [JLCPCB library](https://github.com/CDFER/JLCPCB-Kicad-Library) is pre-installed.
+The kicad installation excludes documentation and 3D models to save space. The great [JLCPCB library](https://github.com/CDFER/JLCPCB-Kicad-Library) and [fabrication toolkit plugin](https://github.com/bennymeg/Fabrication-Toolkit) is pre-installed.
 
 Use it like this in a GitHub workflow:
 
