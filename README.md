@@ -46,3 +46,11 @@ jobs:
           name: report
           path: "*.rpt"
 ```
+
+## Updating the JLCPCB library
+
+To update the JLCPCB library run:
+
+```bash
+install-jlcpcb.sh
+```

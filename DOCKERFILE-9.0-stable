@@ -35,8 +35,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 COPY install-jlcpcb.sh /usr/local/bin/install-jlcpcb.sh
 RUN chmod +x /usr/local/bin/install-jlcpcb.sh && \
-    /usr/local/bin/install-jlcpcb.sh && \
-    rm /usr/local/bin/install-jlcpcb.sh
+    /usr/local/bin/install-jlcpcb.sh &&
 
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
