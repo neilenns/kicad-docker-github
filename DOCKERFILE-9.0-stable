@@ -37,6 +37,15 @@ COPY install-jlcpcb.sh /usr/local/bin/install-jlcpcb.sh
 RUN chmod +x /usr/local/bin/install-jlcpcb.sh && \
     /usr/local/bin/install-jlcpcb.sh
 
+# Install Fabrication Toolkit plugin
+COPY install-fabrication-toolkit.sh /usr/local/bin/install-fabrication-toolkit.sh
+RUN chmod +x /usr/local/bin/install-fabrication-toolkit.sh && \
+    /usr/local/bin/install-fabrication-toolkit.sh && \
+    rm /usr/local/bin/install-fabrication-toolkit.sh
+
+# Add plugin directory to Python path so build automation can run the plugins
+ENV PYTHONPATH="/root/.local/share/kicad/9.0/3rdparty/plugins"
+
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
       org.opencontainers.image.documentation='https://github.com/neilenns/kicad-docker-github' \
