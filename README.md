@@ -10,7 +10,11 @@ This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitH
 
 The kicad installation excludes documentation and 3D models to save space. The great [JLCPCB library](https://github.com/CDFER/JLCPCB-Kicad-Library) and [fabrication toolkit plugin](https://github.com/bennymeg/Fabrication-Toolkit) is pre-installed.
 
-Use it like this in a GitHub workflow:
+## Using from a template
+
+This image is used as the base for my KiCad 9.0 project template that has full release automation for submitting designs to JLCPCB. See the [project template repo](https://github.com/neilenns/KiCad9-CICD-template) for information on how to use it.
+
+## Using directly in a GitHub workflow
 
 ```yaml
 name: CI
