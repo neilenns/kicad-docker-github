@@ -13,9 +13,9 @@ RUN (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y
 	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
 	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 	&& sudo apt update \
-	&& sudo apt install gh -y
+	&& sudo apt install -y
 
-# Install KiCad, but do not install docs or 3d models to save time and space. 3d models will come
+# Install KiCad and xvfb, but do not install docs or 3d models to save time and space. 3d models will come
 # from the JLCPCB library.
 RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && \
     apt update && \
@@ -23,6 +23,8 @@ RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && \
     kicad \
     kicad-symbols \
     kicad-footprints
+
+RUN apt update && apt install xvfb -y
 
 # Copy base library into GitHub workflow user folder
 RUN mkdir -p /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
@@ -40,9 +42,6 @@ RUN chmod +x /usr/local/bin/install-plugins.sh && \
 
 # Add plugin directory to Python path so build automation can run the plugins
 ENV PYTHONPATH="/root/.local/share/kicad/9.0/3rdparty/plugins"
-
-# Prevent InteractiveHtmlBom plugin from trying to open a display in headless environment
-ENV INTERACTIVE_HTML_BOM_NO_DISPLAY=true
 
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
