@@ -28,16 +28,11 @@ RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && \
 RUN mkdir -p /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
 RUN cp /usr/share/kicad/template/*-lib-table /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
 
-# Install latest JLCPCB library
+# Install latest JLCPCB library and KiCad plugins
 RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     && rm -rf /var/lib/apt/lists/*
-COPY install-jlcpcb.sh /usr/local/bin/install-jlcpcb.sh
-RUN chmod +x /usr/local/bin/install-jlcpcb.sh && \
-    /usr/local/bin/install-jlcpcb.sh
-
-# Install KiCad plugins
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 RUN chmod +x /usr/local/bin/install-plugins.sh && \
     /usr/local/bin/install-plugins.sh && \
