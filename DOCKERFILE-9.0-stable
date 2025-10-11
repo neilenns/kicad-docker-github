@@ -41,6 +41,9 @@ RUN chmod +x /usr/local/bin/install-plugins.sh && \
 # Add plugin directory to Python path so build automation can run the plugins
 ENV PYTHONPATH="/root/.local/share/kicad/9.0/3rdparty/plugins"
 
+# Prevent InteractiveHtmlBom plugin from trying to open a display in headless environment
+ENV INTERACTIVE_HTML_BOM_NO_DISPLAY=true
+
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \
       org.opencontainers.image.documentation='https://github.com/neilenns/kicad-docker-github' \
