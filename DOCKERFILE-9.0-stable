@@ -35,11 +35,19 @@ RUN cp /usr/share/kicad/template/*-lib-table /root/.config/kicad/$(kicad-cli -v 
 RUN apt-get update && apt-get install -y \
     curl \
     unzip \
+    jq \
     && rm -rf /var/lib/apt/lists/*
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 RUN chmod +x /usr/local/bin/install-plugins.sh && \
     /usr/local/bin/install-plugins.sh && \
     rm /usr/local/bin/install-plugins.sh
+
+# Configure KiCad settings (disable auto-backup, etc.)
+COPY kicad-settings-overrides.json /tmp/kicad-settings-overrides.json
+COPY configure-kicad-settings.sh /usr/local/bin/configure-kicad-settings.sh
+RUN chmod +x /usr/local/bin/configure-kicad-settings.sh && \
+    /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json && \
+    rm /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json
 
 # Add plugin directory to Python path so build automation can run the plugins
 ENV PYTHONPATH="/root/.local/share/kicad/9.0/3rdparty/plugins"

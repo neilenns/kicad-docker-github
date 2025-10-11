@@ -10,6 +10,14 @@ This repo publishes ubuntu-based Docker images to use the KiCad cli tool in GitH
 
 The kicad installation excludes documentation and 3D models to save space. The great [JLCPCB library](https://github.com/CDFER/JLCPCB-Kicad-Library), [fabrication toolkit plugin](https://github.com/bennymeg/Fabrication-Toolkit), and [Interactive HTML BOM plugin](https://github.com/openscopeproject/InteractiveHtmlBom) are pre-installed.
 
+## KiCad Configuration
+
+The Docker image includes custom KiCad settings configured during the build process. By default, the following settings are applied:
+
+- **Auto-backup disabled**: The automatic backup feature is disabled since this is intended to be used with GitHub repositories. GitHub is the place to store version history.
+
+These settings are stored in `~/.config/kicad/9.0/kicad_common.json` and are configured via the `kicad-settings-overrides.json` file. To modify or add additional settings, edit the `kicad-settings-overrides.json` file before building the Docker image. The settings use JSON merge, so only the specified values are overridden while all other settings retain their defaults.
+
 ## Using from a template
 
 This image is used as the base for my KiCad 9.0 project template that has full release automation for submitting designs to JLCPCB. See the [project template repo](https://github.com/neilenns/KiCad9-CICD-template) for information on how to use it.
