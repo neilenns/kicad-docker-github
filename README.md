@@ -14,7 +14,7 @@ The kicad installation excludes documentation and 3D models to save space. The g
 
 The Docker image includes custom KiCad settings configured during the build process. By default, the following settings are applied:
 
-- **Auto-backup disabled**: The automatic backup feature is disabled to avoid unnecessary file generation in CI/CD environments.
+- **Auto-backup disabled**: The automatic backup feature is disabled since this is intended to be used with GitHub repositories. GitHub is the place to store version history.
 
 These settings are stored in `~/.config/kicad/9.0/kicad_common.json` and are configured via the `kicad-settings-overrides.json` file. To modify or add additional settings, edit the `kicad-settings-overrides.json` file before building the Docker image. The settings use JSON merge, so only the specified values are overridden while all other settings retain their defaults.
 
