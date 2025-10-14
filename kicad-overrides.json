@@ -1,0 +1,14 @@
+{
+  "pcm": {
+    "repositories": [
+      {
+        "name": "KiCad official repository",
+        "url": "https://repository.kicad.org/repository.json"
+      },
+      {
+        "name": "CD_FER's KiCad repository",
+        "url": "https://raw.githubusercontent.com/CDFER/cd_fer-kicad-repository/main/repository.json"
+      }
+    ]
+  }
+}

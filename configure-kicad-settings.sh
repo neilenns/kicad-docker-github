@@ -4,23 +4,19 @@ set -e
 # Script to configure KiCad settings by merging JSON overrides
 # This allows customizing KiCad settings during Docker image build
 
-KICAD_VERSION=$(kicad-cli -v | cut -d . -f 1,2)
-CONFIG_DIR="/root/.config/kicad/${KICAD_VERSION}"
-CONFIG_FILE="${CONFIG_DIR}/kicad_common.json"
 OVERRIDES_FILE="$1"
+CONFIG_FILE="$2"
 
 echo "=================================================="
-echo "Configuring KiCad settings..."
+echo "Configuring settings..."
 echo "=================================================="
-echo "KiCad version: ${KICAD_VERSION}"
-echo "Config directory: ${CONFIG_DIR}"
 echo "Config file: ${CONFIG_FILE}"
 echo "Overrides file: ${OVERRIDES_FILE}"
 
-# Check if overrides file is provided and exists
-if [ -z "$OVERRIDES_FILE" ]; then
-    echo "❌ Error: No overrides file specified"
-    echo "Usage: $0 <overrides-file.json>"
+# Check if both parameters are provided
+if [ -z "$OVERRIDES_FILE" ] || [ -z "$CONFIG_FILE" ]; then
+    echo "❌ Error: Both overrides file and config file must be specified"
+    echo "Usage: $0 <overrides-file.json> <config-file.json>"
     exit 1
 fi
 
@@ -30,6 +26,7 @@ if [ ! -f "$OVERRIDES_FILE" ]; then
 fi
 
 # Ensure config directory exists
+CONFIG_DIR=$(dirname "$CONFIG_FILE")
 mkdir -p "$CONFIG_DIR"
 
 # If config file doesn't exist, create it with an empty JSON object
@@ -60,5 +57,5 @@ else
 fi
 
 echo "=================================================="
-echo "KiCad settings configuration complete!"
+echo "Settings configuration complete!"
 echo "=================================================="

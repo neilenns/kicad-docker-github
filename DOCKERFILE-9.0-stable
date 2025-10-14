@@ -27,9 +27,11 @@ RUN add-apt-repository -y ppa:kicad/kicad-${KICAD_VERSION}-releases && \
 # Add xvfb so Interactive BOM plugin can be used in a non-interactive environment
 RUN apt update && apt install xvfb -y
 
-# Copy base library into GitHub workflow user folder
-RUN mkdir -p /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
-RUN cp /usr/share/kicad/template/*-lib-table /root/.config/kicad/$(kicad-cli -v | cut -d . -f 1,2)
+# Copy base library and settings into user folder  
+ENV KICAD_CONFIG_DIR="/root/.config/kicad/${KICAD_VERSION}"
+COPY kicad-base.json ${KICAD_CONFIG_DIR}/kicad.json
+RUN mkdir -p "${KICAD_CONFIG_DIR}" && \
+    cp /usr/share/kicad/template/*-lib-table "${KICAD_CONFIG_DIR}"
 
 # Install latest JLCPCB library and KiCad plugins
 RUN apt-get update && apt-get install -y \
@@ -41,16 +43,19 @@ COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 RUN chmod +x /usr/local/bin/install-plugins.sh && \
     /usr/local/bin/install-plugins.sh && \
     rm /usr/local/bin/install-plugins.sh
+COPY installed_packages.json ${KICAD_CONFIG_DIR}/
 
 # Configure KiCad settings (disable auto-backup, etc.)
 COPY kicad-settings-overrides.json /tmp/kicad-settings-overrides.json
+COPY kicad-overrides.json /tmp/kicad-overrides.json
 COPY configure-kicad-settings.sh /usr/local/bin/configure-kicad-settings.sh
 RUN chmod +x /usr/local/bin/configure-kicad-settings.sh && \
-    /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json && \
-    rm /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json
+    /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json "${KICAD_CONFIG_DIR}/kicad_common.json" && \
+    /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-overrides.json "${KICAD_CONFIG_DIR}/kicad.json" && \
+    rm /usr/local/bin/configure-kicad-settings.sh /tmp/kicad-settings-overrides.json /tmp/kicad-overrides.json
 
 # Add plugin directory to Python path so build automation can run the plugins
-ENV PYTHONPATH="/root/.local/share/kicad/9.0/3rdparty/plugins"
+ENV PYTHONPATH="/root/.local/share/kicad/${KICAD_VERSION}/3rdparty/plugins"
 
 LABEL org.opencontainers.image.authors='Neil Enns' \
       org.opencontainers.image.url='https://github.com/neilenns/kicad-docker-github' \

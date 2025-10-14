@@ -8,7 +8,7 @@ INSTALL_BASE="/root/.local/share/kicad/9.0/3rdparty"
 # Format: "REPO_OWNER|REPO_NAME|TARGET_SUBFOLDER|EXTRACT_PATTERN"
 PLUGINS=(
     "bennymeg|Fabrication-Toolkit|com_github_bennymeg_JLC-Plugin-for-KiCad|Fabrication-Toolkit-*"
-    "openscopeproject|InteractiveHtmlBom|com_github_openscopeproject_InteractiveHtmlBom|InteractiveHtmlBom*"
+    "openscopeproject|InteractiveHtmlBom|org_openscopeproject_InteractiveHtmlBom|InteractiveHtmlBom*"
 )
 
 # Library configurations for JLCPCB-style installations
@@ -90,22 +90,9 @@ install_plugin() {
         cp -r "$PLUGINS_SRC/"* "$PLUGINS_DEST/"
         echo "✅ Installed plugins from plugins/ folder to $PLUGINS_DEST"
     else
-        # Copy from root directory (InteractiveHtmlBom style)
-        # Copy all relevant files (skip common metadata files)
-        find "$EXTRACTED_DIR" -maxdepth 1 -type f \( -name "*.py" -o -name "*.json" -o -name "*.md" -o -name "*.txt" \) -exec cp {} "$PLUGINS_DEST/" \;
-        
-        # Copy any subdirectories that might contain plugin code
-        for dir in "$EXTRACTED_DIR"/*/ ; do
-            if [ -d "$dir" ]; then
-                dirname=$(basename "$dir")
-                # Skip common metadata directories
-                if [ "$dirname" != ".git" ] && [ "$dirname" != ".github" ]; then
-                    cp -r "$dir" "$PLUGINS_DEST/"
-                fi
-            fi
-        done
-        
-        echo "✅ Installed plugin from root directory to $PLUGINS_DEST"
+        # Copy entire contents from root directory
+        cp -r "$EXTRACTED_DIR/"* "$PLUGINS_DEST/"
+        echo "✅ Installed plugin to $PLUGINS_DEST"
     fi
     
     # Cleanup
