@@ -8,7 +8,7 @@ INSTALL_BASE="/root/.local/share/kicad/9.0/3rdparty"
 # Format: "REPO_OWNER|REPO_NAME|TARGET_SUBFOLDER|EXTRACT_PATTERN"
 PLUGINS=(
     "bennymeg|Fabrication-Toolkit|com_github_bennymeg_JLC-Plugin-for-KiCad|Fabrication-Toolkit-*"
-    "openscopeproject|InteractiveHtmlBom|com_github_openscopeproject_InteractiveHtmlBom|InteractiveHtmlBom*"
+    "openscopeproject|InteractiveHtmlBom|org_openscopeproject_InteractiveHtmlBom|InteractiveHtmlBom*"
 )
 
 # Library configurations for JLCPCB-style installations
